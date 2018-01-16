@@ -105,14 +105,15 @@ Note: these may not all work on all operating systems or command-line shells, bu
 * `httpom` - Runs httpom in pure-interactive mode. Depending on the default pomfile, this will run the interactive mode in CLI or WEB mode.
 * `httpom GET http://httpbin.org/get` - Makes a simple HTTP/1.1 GET on http://httpbin.org/get, without making use of a pomfile.
 * `httpom login.pom` - Executes the request specified by login.pom.
-* `cat login.pom | httpom --` - Executes login.pom, which is passed along via stdin.
+* `httpom login.pom --verbose` - Executes the request specified by login.pom, and outputs verbosely full details about the request and response.
+* `cat login.pom | httpom --input=stdin` - Executes login.pom, which is passed along via stdin. By default, stdin is treated as a Pomfile.
 * `httpom login.pom get-dogs.pom` - Executes login.pom, then get-dogs.pom, in a shared session.
 * `httpom login.pom | httpom get-dogs.pom` - Executes login.pom, then get-dogs.pom, in a shared session.
 * `httpom login-and-get-dogs.pom` - Executes login-and-get-dogs.pom, which could execute login.pom and then get-dogs.pom, in a shared session.
 * `httpom --web login-and-get-dogs.pom` - Executes login-and-get-dogs.pom, in an interactive web session. If are template variables are undefined, users are provided with a webpage on which they can define them and then make the request(s).
 * `httpom upload-cute-dog-picture.pom < cute-dog-picture.jpg` - Executes upload-cute-dog-picture.pom, with cute-dog-picture.jpg as the request body.
 * `httpom get-cute-dog-picture.pom > cute-dog-picture.jpg` - Executes get-cute-dog-picture.pom and saves its response body to cute-dog-picture.jpg.
-* `httpom --output=web get-cute-dog-picture.pom` - Executes get-cute-dog-picture.pom, then opens its response body in the system's default web browser instead of stdin.
+* `httpom --output=web get-cute-dog-picture.pom` - Executes get-cute-dog-picture.pom, then opens its response body in the system's default web browser instead of outputting to stdout.
 
 ### here-documents
 

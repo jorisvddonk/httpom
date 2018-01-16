@@ -75,7 +75,8 @@ Content-Type: application/json
 
 A Pomfile describing a POST to httpbin.org, with template variables and using the `@type` directive:
 
-```POST http://httpbin.org/post
+```
+POST http://httpbin.org/post
 
 @type: json
 

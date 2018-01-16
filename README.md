@@ -73,6 +73,17 @@ Content-Type: application/json
 {"foo": "bar"}
 ```
 
+A Pomfile describing a POST to httpbin.org, with template variables and using the `@type` directive:
+
+```POST http://httpbin.org/post
+
+@type: json
+
+
+{"foo": "{{foo}}"}
+```
+
+
 ## Template variables, sessions, pomfile includes, pomfile flow, JavaScript response parsing.
 
 @TODO: document. These should be a fairly cool features, allowing you to chain together various pomfiles in interesting ways and parse their results. This should be used to, for example, login and then make authenticated requests.
@@ -97,6 +108,8 @@ Note: these may not all work on all operating systems or command-line shells, bu
 * `cat login.pom | httpom --` - Executes login.pom, which is passed along via stdin.
 * `httpom login.pom get-dogs.pom` - Executes login.pom, then get-dogs.pom, in a shared session.
 * `httpom login.pom | httpom get-dogs.pom` - Executes login.pom, then get-dogs.pom, in a shared session.
+* `httpom login-and-get-dogs.pom` - Executes login-and-get-dogs.pom, which could execute login.pom and then get-dogs.pom, in a shared session.
+* `httpom --web login-and-get-dogs.pom` - Executes login-and-get-dogs.pom, in an interactive web session. If are template variables are undefined, users are provided with a webpage on which they can define them and then make the request(s).
 * `httpom upload-cute-dog-picture.pom < cute-dog-picture.jpg` - Executes upload-cute-dog-picture.pom, with cute-dog-picture.jpg as the request body.
 * `httpom get-cute-dog-picture.pom > cute-dog-picture.jpg` - Executes get-cute-dog-picture.pom and saves its response body to cute-dog-picture.jpg.
 * `httpom --output=web get-cute-dog-picture.pom` - Executes get-cute-dog-picture.pom, then opens its response body in the system's default web browser instead of stdin.

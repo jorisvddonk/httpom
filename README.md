@@ -30,9 +30,10 @@ A central concept of httpom is the Pomfile. A pomfile is a file with a `.pom` ex
 A pomfile consists of two sections, in the following order:
 * Request/Response Handling and Instructions, containing in any order except where noted differently:
   * A request-line, similar to [RFC7230](https://tools.ietf.org/html/rfc7230#section-3.1.1), specifying a URL and an HTTP method. The protocol version is optional and defaults to a sane default (`HTTP/1.1`). *Required. Must be the first line of the section*.
-  * HTTP headers, following [RFC7230](https://tools.ietf.org/html/rfc7230#section-3.2). *Optional*.
-  * Query string parameters: lines starting with a `?`, which are added to the URL. *Optional*.
-  * httpom directives, lines starting with a `@` which provide settings and meta-information to httpom. *Optional*. See the section below for directive options.
+  * Instructions, containing in any order, optionally:
+    * HTTP headers to be added to the request, following [RFC7230](https://tools.ietf.org/html/rfc7230#section-3.2).
+    * Query string parameters to be added to the URL: lines starting with a `?`.
+    * httpom directives to alter httpom's behaviour with: lines starting with a `@`. These provide settings and meta-information to httpom. See the section below for directive options.
 * A request body. The request body is ALWAYS the last section of a Pomfile
 
 Sections are delimited by a newline triplet (either `\r\n\r\n\r\n` or `\n\n\n`, depending on the newline type (`\r\n` or `\n`) first found in a Pomfile).

@@ -1,0 +1,13 @@
+{
+  "name": "httpom",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joris van de Donk <jorisvddonk@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+  }
+}

@@ -27,22 +27,20 @@ A central concept of httpom is the Pomfile. A pomfile is a file with a `.pom` ex
 * a sequence of HTTP requests, or:
 * a set of settings, to be used as defaults (e.g. as a defaults configuration file)
 
-A pomfile consists of a few sections in any order (unless otherwise mentioned):
-* A request-line, similar to [RFC7230](https://tools.ietf.org/html/rfc7230#section-3.1.1), specifying a URL and an HTTP method. The protocol version is optional and defaults to a sane default (`HTTP/1.1`). *Required. Must be the first line of the document*.
-* HTTP headers, following [RFC7230](https://tools.ietf.org/html/rfc7230#section-3.2). *Optional*.
-* Query string parameters: lines starting with a `?`, which are added to the URL.
-* httpom directives, lines starting with a `@` which provide settings and meta-information to httpom. *Optional*. See the section below for directive options.
-* A separator: two newlines. *Optional, but required if a request body is used*.
-* A request body.
+A pomfile consists of two sections, in the following order:
+* Request/Response Handling and Instructions, containing in any order except where noted differently:
+  * A request-line, similar to [RFC7230](https://tools.ietf.org/html/rfc7230#section-3.1.1), specifying a URL and an HTTP method. The protocol version is optional and defaults to a sane default (`HTTP/1.1`). *Required. Must be the first line of the section*.
+  * HTTP headers, following [RFC7230](https://tools.ietf.org/html/rfc7230#section-3.2). *Optional*.
+  * Query string parameters: lines starting with a `?`, which are added to the URL. *Optional*.
+  * httpom directives, lines starting with a `@` which provide settings and meta-information to httpom. *Optional*. See the section below for directive options.
+* A request body. The request body is ALWAYS the last section of a Pomfile
 
-All of the sections are delimited with newlines (`\n`, `\r\n` or `\n\r`).
+Sections are delimited by a newline triplet (either `\r\n\r\n\r\n` or `\n\n\n`, depending on the newline type (`\r\n` or `\n`) first found in a Pomfile).
 
 Furthermore, the following can be used anywhere except for the request body:
-
 * Comments: lines starting with one or more slashes (`/`) or one or more whitespace characters are treated as comments. Note: due to RFC7230, a hash (`#`) can *not* be used to start a comment!
-* One newline can be used to separate sections.
 
-And the following can be used in all sections:
+The following can be used in all sections:
 * Template variables.
 
 ### Pomfile directives

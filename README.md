@@ -8,7 +8,7 @@ Httpom is a tool for making HTTP request, which can be used by devs, ops, suppor
 
 The following design principles guide httpom's usage, development, implementation:
 
-* Cute - Like a Pomeranian, httpom should be cute and elegant.
+* Cute - [Like a Pomeranian](http://www.imagoid.com/r/pomeranians), httpom should be cute and elegant.
 * Fun - httpom's development and usage should be *fun*. Humor should be used in its documentation and examples.
 * Metaphoric - httpom should resemble a real Pomeranian in certain ways, such as functionality. For example, just like a Pomeranian, httpom should be able to *fetch* stuff, and you should be able to have a *conversation* with it.
 * [Developer Dogfooding](https://en.wikipedia.org/wiki/Eating_your_own_dog_food) - A good devtool should be used by developers to prove a concept, and can later on be used by non-developers day-to-day.

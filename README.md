@@ -53,6 +53,7 @@ Pomfile directives resemble HTTP headers, except they start with an `@`, and the
 * `@flow`: this directive describes a flow of multiple Pomfiles, and can be used to chain together multiple Pomfiles in interesting ways.
 * `@pomfile-searchpath`: describes the pomfile searchpath, for Pomfile discovery in pure-interactive mode. Should usually only be used for meta-pomfile.
 * `@no-template-variables-in-body`: describes that template variable functionality should be disabled for the request body.
+* `@use-chunked-encoding`: use a chunked transfer encoding. This removes the 'content-length' header, which is computed automatically when a request body is present.
 
 ### Pomfile examples
 

@@ -28,6 +28,9 @@ var parseCommonFlags = function(callback) { // Parse common flags, then invoke c
     debug.enable('*');
     log("Verbose logging enabled");
   }
+
+  log('Command line arguments: ' + program.rawArgs.slice(2).join(' '))
+
   var args = Array.prototype.slice.call(arguments);
   args = args.slice(1);
   callback.apply(this, args);

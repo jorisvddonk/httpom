@@ -1,6 +1,7 @@
 POST http://httpbin.org/post
 
-@type: json
+Content-Type: application/json
+@template: mustache
 
 
-{"foo": "{{foo}}"}
+{"email": "{{email}}", "password": "{{password}}"}

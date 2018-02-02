@@ -7,19 +7,41 @@ var prepareRequest = require('./lib/prepareRequest');
 var fetch = require('node-fetch');
 var fs = require('fs');
 var package = require('./package.json');
+var inquirer = require('inquirer');
+var _ = require('lodash');
 
 var log = debug('httpom:cmd');
+
 
 var executePomfile = function(pomfile) {
   var parsed_pomfile = parsePomfile(pomfile);
   var prepared_request = prepareRequest(parsed_pomfile);
-  
-  fetch(prepared_request.url, prepared_request.options).then(function(res){return res.buffer()}).then(function(buffer){
-    if (buffer) {
-      console.log(buffer.toString());
+
+  var questions = [];
+  if (prepared_request.requiredVariables) {
+    questions = prepared_request.requiredVariables.map(function(variable){
+      var retval = {type: 'input', name: variable, message: 'Please provide a value for template variable `' + variable + '`'}
+      if (variable === 'password') {
+        retval.type = 'password';
+      }
+      return retval;
+    });
+  }
+  inquirer.prompt(questions).then(function(answers){
+    if (prepared_request.preRequestFunctions) {
+      log(prepared_request.options.body.toString());
+      prepared_request.preRequestFunctions.forEach(function(preRequestFunction){
+        preRequestFunction(prepared_request, answers);
+      })
+      log(prepared_request.options.body.toString());
     }
-  }).catch(function(err){
-    console.error(err);
+    fetch(prepared_request.url, prepared_request.options).then(function(res){return res.buffer()}).then(function(buffer){
+      if (buffer) {
+        console.log(buffer.toString());
+      }
+    }).catch(function(err){
+      console.error(err);
+    });
   });
 };
 

@@ -9,5 +9,8 @@
   "author": "Joris van de Donk <jorisvddonk@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.13.0",
+    "http-headers": "^3.0.2",
+    "node-fetch": "^1.7.3"
   }
 }

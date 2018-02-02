@@ -1,0 +1,7 @@
+GET http://httpbin.org/get?ham=ster
+
+?foo=bar
+?foo=baz
+?bar=quux
+?corgi=
+SomeHeader: somevalue

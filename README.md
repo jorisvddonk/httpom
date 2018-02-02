@@ -2,7 +2,7 @@
 
 Httpom is a tool for making HTTP request, which can be used by devs, ops, support staff and other humans beings alike.
 
-**NOTE: Currently, httpom is a project without any implementation. Examples, command invocations and featureset may change at any time.**
+**NOTE: Currently, httpom is a project with an implementation that doens't fully match the specificaton below. Furthermore, examples, command invocations and featureset may change at any time.**
 
 ## Design philosophy
 

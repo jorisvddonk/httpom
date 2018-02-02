@@ -15,5 +15,10 @@
   },
   "bin": {
     "httpom": "index.js"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jorisvddonk/httpom.git"
+  },
+  "homepage": "https://github.com/jorisvddonk/httpom"
 }

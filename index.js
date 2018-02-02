@@ -29,11 +29,9 @@ var executePomfile = function(pomfile) {
   }
   inquirer.prompt(questions).then(function(answers){
     if (prepared_request.preRequestFunctions) {
-      log(prepared_request.options.body.toString());
       prepared_request.preRequestFunctions.forEach(function(preRequestFunction){
         preRequestFunction(prepared_request, answers);
       })
-      log(prepared_request.options.body.toString());
     }
     fetch(prepared_request.url, prepared_request.options).then(function(res){return res.buffer()}).then(function(buffer){
       if (buffer) {

@@ -7,17 +7,31 @@ var fetch = require('node-fetch');
 var fs = require('fs');
 var package = require('./package.json');
 
-program.version(package.version)
-.option('--web', 'Use web-based interface')
-.option('--cli', 'Use command-line interface')
-.command('*')
-.action(function(pomfile){
-  var parsed_pomfile = parsePomfile(fs.readFileSync(pomfile));
+var executePomfile = function(pomfile) {
+  var parsed_pomfile = parsePomfile(pomfile);
   var prepared_request = prepareRequest(parsed_pomfile);
   
   fetch(prepared_request.url, prepared_request.options).then(function(res){
     console.log(res.body.read().toString());
   });
-  
+};
+
+program.version(package.version)
+.option('--web', 'Use web-based interface')
+.option('--cli', 'Use command-line interface');
+
+['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE'].forEach(function(method){
+  program
+  .command(method + " <url> [protocol]")
+  .action(function(url, protocol){
+    executePomfile(new Buffer(`${method} ${url} ${protocol}`))
+  })
+})
+
+program
+.command('*')
+.action(function(pomfilePath){
+  var pomfile = fs.readFileSync(pomfilePath);
+  executePomfile(pomfile);
 });
 program.parse(process.argv);

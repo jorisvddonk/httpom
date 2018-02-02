@@ -20,9 +20,9 @@ var executePomfile = function(pomfile) {
   });
 };
 
-program.version(package.version)
-.option('--web', 'Use web-based interface')
-.option('--cli', 'Use command-line interface');
+program.version(package.version);
+//program.option('--web', 'Use web-based interface'); // not supported yet
+//program.option('--cli', 'Use command-line interface'); // not supported yet
 
 ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE'].forEach(function(method){
   program

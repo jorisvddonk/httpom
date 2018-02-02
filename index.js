@@ -11,8 +11,12 @@ var executePomfile = function(pomfile) {
   var parsed_pomfile = parsePomfile(pomfile);
   var prepared_request = prepareRequest(parsed_pomfile);
   
-  fetch(prepared_request.url, prepared_request.options).then(function(res){
-    console.log(res.body.read().toString());
+  fetch(prepared_request.url, prepared_request.options).then(function(res){return res.buffer()}).then(function(buffer){
+    if (buffer) {
+      console.log(buffer.toString());
+    }
+  }).catch(function(err){
+    console.error(err);
   });
 };
 

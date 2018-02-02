@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 
+var debug = require('debug');
 var program = require('commander');
 var parsePomfile = require('./lib/parsePomfile');
 var prepareRequest = require('./lib/prepareRequest');
 var fetch = require('node-fetch');
 var fs = require('fs');
 var package = require('./package.json');
+
+var log = debug('httpom:cmd');
 
 var executePomfile = function(pomfile) {
   var parsed_pomfile = parsePomfile(pomfile);
@@ -20,22 +23,39 @@ var executePomfile = function(pomfile) {
   });
 };
 
+var parseCommonFlags = function(callback) { // Parse common flags, then invoke callback with arguments
+  if (program.verbose) {
+    debug.enable('*');
+    log("Verbose logging enabled");
+  }
+  var args = Array.prototype.slice.call(arguments);
+  args = args.slice(1);
+  callback.apply(this, args);
+};
+
 program.version(package.version);
 //program.option('--web', 'Use web-based interface'); // not supported yet
 //program.option('--cli', 'Use command-line interface'); // not supported yet
+program.option('-v, --verbose', 'Verbose logging');
 
 ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE'].forEach(function(method){
   program
   .command(method + " <url> [protocol]")
   .action(function(url, protocol){
-    executePomfile(new Buffer(`${method} ${url} ${protocol}`))
+    parseCommonFlags(function(){
+      executePomfile(new Buffer(`${method} ${url} ${protocol}`))
+    });
   })
 })
 
 program
 .command('*')
 .action(function(pomfilePath){
-  var pomfile = fs.readFileSync(pomfilePath);
-  executePomfile(pomfile);
+  parseCommonFlags(function(){
+    var pomfile = fs.readFileSync(pomfilePath);
+    executePomfile(pomfile);
+  });
 });
+
+// Parse argv! This will kick off the actions..
 program.parse(process.argv);

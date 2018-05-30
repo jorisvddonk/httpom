@@ -12,7 +12,7 @@ var _ = require('lodash');
 
 var log = debug('httpom:cmd');
 
-
+var dry_run = false;
 var executePomfile = function(pomfile) {
   var parsed_pomfile = parsePomfile(pomfile);
   var prepared_request = prepareRequest(parsed_pomfile);
@@ -33,6 +33,9 @@ var executePomfile = function(pomfile) {
         preRequestFunction(prepared_request, answers);
       })
     }
+    if (dry_run) {
+      return;
+    }
     fetch(prepared_request.url, prepared_request.options).then(function(res){return res.buffer()}).then(function(buffer){
       if (buffer) {
         console.log(buffer.toString());
@@ -49,6 +52,11 @@ var parseCommonFlags = function(callback) { // Parse common flags, then invoke c
     log("Verbose logging enabled");
   }
 
+  if (program.dryRun) {
+    dry_run = true;
+    log("Dry run enabled");
+  }
+
   log('Command line arguments: ' + program.rawArgs.slice(2).join(' '))
 
   var args = Array.prototype.slice.call(arguments);
@@ -60,6 +68,7 @@ program.version(package.version);
 //program.option('--web', 'Use web-based interface'); // not supported yet
 //program.option('--cli', 'Use command-line interface'); // not supported yet
 program.option('-v, --verbose', 'Verbose logging');
+program.option('--dry-run', 'Perform a dry run (don\'t make any actual requests)');
 
 ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE'].forEach(function(method){
   program

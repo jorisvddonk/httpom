@@ -1,0 +1,6 @@
+POST http://httpbin.org/post
+
+Content-Type: application/x-www-form-urlencoded
+
+
+foo=bar&baz=quux&baz=123

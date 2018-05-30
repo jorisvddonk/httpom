@@ -4,6 +4,7 @@ var debug = require('debug');
 var program = require('commander');
 var parsePomfile = require('./lib/parsePomfile');
 var prepareRequest = require('./lib/prepareRequest');
+var toHAR = require('./lib/toHAR');
 var fetch = require('node-fetch');
 var fs = require('fs');
 var package = require('./package.json');
@@ -16,7 +17,7 @@ var dry_run = false;
 var executePomfile = function(pomfile) {
   var parsed_pomfile = parsePomfile(pomfile);
   var prepared_request = prepareRequest(parsed_pomfile);
-
+  
   var questions = [];
   if (prepared_request.requiredVariables) {
     questions = prepared_request.requiredVariables.map(function(variable){
@@ -32,6 +33,10 @@ var executePomfile = function(pomfile) {
       prepared_request.preRequestFunctions.forEach(function(preRequestFunction){
         preRequestFunction(prepared_request, answers);
       })
+    }
+    var har = toHAR(prepared_request);
+    if (program.toHAR) {
+      process.stdout.write(JSON.stringify(har, null, 2));
     }
     if (dry_run) {
       return;
@@ -52,9 +57,13 @@ var parseCommonFlags = function(callback) { // Parse common flags, then invoke c
     log("Verbose logging enabled");
   }
 
-  if (program.dryRun) {
+  if (program.dryRun || program.toHAR) {
     dry_run = true;
     log("Dry run enabled");
+  }
+
+  if (program.toHAR) {
+    log("Outputting HAR");
   }
 
   log('Command line arguments: ' + program.rawArgs.slice(2).join(' '))
@@ -69,6 +78,7 @@ program.version(package.version);
 //program.option('--cli', 'Use command-line interface'); // not supported yet
 program.option('-v, --verbose', 'Verbose logging');
 program.option('--dry-run', 'Perform a dry run (don\'t make any actual requests)');
+program.option('--toHAR', 'Output a HAR file on stdout. Also implies --dry-run');
 
 ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE'].forEach(function(method){
   program

@@ -7,21 +7,25 @@ var prepareRequest = require('./lib/prepareRequest');
 var inquireVariables = require('./lib/inquireVariables');
 var determineRequiredVariables = require('./lib/determineRequiredVariables');
 var performRequest = require('./lib/performRequest');
+var applyMiscDirectives = require('./lib/applyMiscDirectives');
 var applyVariablesToParsedPomfile = require('./lib/applyVariablesToParsedPomfile');
 var fs = require('fs');
 var package = require('./package.json');
+var path = require('path');
 var _ = require('lodash');
 
 var log = debug('httpom:cmd');
 
 var dry_run = false;
-var executePomfile = function(pomfile) {
-  var execution_pipeline = [parsePomfile, determineRequiredVariables, inquireVariables, applyVariablesToParsedPomfile, prepareRequest, performRequest];
+var executePomfile = function(pomfile, pomfilePath) {
+  var execution_pipeline = [parsePomfile, determineRequiredVariables, inquireVariables, applyVariablesToParsedPomfile, prepareRequest, applyMiscDirectives, performRequest];
   var pipeline_step;
   var context = {
     pomfile: pomfile,
+    pomfilePath: pomfilePath, // absolute path, or null if no pomfile is executed
     program: program,
-    requiredVariables: []
+    requiredVariables: [],
+    execution_pipeline: execution_pipeline
   };
   var next = function() {
     pipeline_step = execution_pipeline.shift();
@@ -69,7 +73,7 @@ program.option('--toHAR', 'Output a HAR file on stdout. Also implies --dry-run')
   .command(method + " <url> [protocol]")
   .action(function(url, protocol){
     parseCommonFlags(function(){
-      executePomfile(new Buffer(`${method} ${url} ${protocol}`))
+      executePomfile(new Buffer(`${method} ${url} ${protocol}`), null)
     });
   })
 })
@@ -78,8 +82,9 @@ program
 .command('*')
 .action(function(pomfilePath){
   parseCommonFlags(function(){
+    pomfilePath = path.resolve(pomfilePath);
     var pomfile = fs.readFileSync(pomfilePath);
-    executePomfile(pomfile);
+    executePomfile(pomfile, pomfilePath);
   });
 });
 

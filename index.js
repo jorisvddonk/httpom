@@ -4,6 +4,7 @@ var debug = require('debug');
 var program = require('commander');
 var parsePomfile = require('./lib/parsePomfile');
 var prepareRequest = require('./lib/prepareRequest');
+var inquireVariables = require('./lib/inquireVariables');
 var performRequest = require('./lib/performRequest');
 var fs = require('fs');
 var package = require('./package.json');
@@ -13,7 +14,7 @@ var log = debug('httpom:cmd');
 
 var dry_run = false;
 var executePomfile = function(pomfile) {
-  var execution_pipeline = [parsePomfile, prepareRequest, performRequest];
+  var execution_pipeline = [parsePomfile, prepareRequest, inquireVariables, performRequest];
   var pipeline_step;
   var context = {
     pomfile: pomfile,
@@ -41,7 +42,7 @@ var parseCommonFlags = function(callback) { // Parse common flags, then invoke c
     program.dryRun = true;
     log("Outputting HAR");
   }
-  
+
   if (program.dryRun) {
     log("Dry run enabled");
   }

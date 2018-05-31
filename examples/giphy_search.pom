@@ -4,3 +4,4 @@ GET http://api.giphy.com/v1/gifs/search
 ?limit=1
 Content-Type: application/json
 @template-querystringparams: mustache
+@finally: ./giphy_openImageInbrowser.js

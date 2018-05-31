@@ -8,6 +8,7 @@ var inquireVariables = require('./lib/inquireVariables');
 var determineRequiredVariables = require('./lib/determineRequiredVariables');
 var performRequest = require('./lib/performRequest');
 var applyMiscDirectives = require('./lib/applyMiscDirectives');
+var showOutput = require('./lib/showOutput');
 var applyVariablesToParsedPomfile = require('./lib/applyVariablesToParsedPomfile');
 var fs = require('fs');
 var package = require('./package.json');
@@ -18,14 +19,15 @@ var log = debug('httpom:cmd');
 
 var dry_run = false;
 var executePomfile = function(pomfile, pomfilePath) {
-  var execution_pipeline = [parsePomfile, determineRequiredVariables, inquireVariables, applyVariablesToParsedPomfile, prepareRequest, applyMiscDirectives, performRequest];
+  var execution_pipeline = [parsePomfile, determineRequiredVariables, inquireVariables, applyVariablesToParsedPomfile, prepareRequest, applyMiscDirectives, performRequest, showOutput];
   var pipeline_step;
   var context = {
     pomfile: pomfile,
     pomfilePath: pomfilePath, // absolute path, or null if no pomfile is executed
     program: program,
     requiredVariables: [],
-    execution_pipeline: execution_pipeline
+    execution_pipeline: execution_pipeline,
+    output: 'stdout.plaintext'
   };
   var next = function() {
     pipeline_step = execution_pipeline.shift();

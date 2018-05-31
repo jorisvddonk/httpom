@@ -1,4 +1,6 @@
 GET http://api.giphy.com/v1/gifs/search
+// This pomfile searches on Giphy for 'pomeranian' and opens the first result in your browser!
+// This needs a Giphy API key. Please see the Giphy website for information on how to obtain one.
 ?api_key={{api_key}}
 ?q=pomeranian
 ?limit=1

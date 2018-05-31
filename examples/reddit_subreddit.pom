@@ -1,0 +1,6 @@
+GET https://www.reddit.com/r/{{subreddit}}.json
+// Opens the first image of an input subreddit in your browser. Windows only.
+Content-Type: application/json
+@finally: ./reddit_openImageInbrowser.js
+@output: none
+@template-requestline: mustache

@@ -13,11 +13,8 @@ var applyVariablesToParsedPomfile = require('./lib/applyVariablesToParsedPomfile
 var fs = require('fs');
 var package = require('./package.json');
 var path = require('path');
-var _ = require('lodash');
-
 var log = debug('httpom:cmd');
 
-var dry_run = false;
 var executePomfile = function(pomfile, pomfilePath) {
   var execution_pipeline = [parsePomfile, determineRequiredVariables, inquireVariables, applyVariablesToParsedPomfile, prepareRequest, applyMiscDirectives, performRequest, showOutput];
   var pipeline_step;
